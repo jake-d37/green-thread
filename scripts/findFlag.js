@@ -36,9 +36,22 @@ async function checkForHost(searchUrl) {
     //add this url to the ones already searched this session
     alreadySearched.push(searchUrl);
 
-    const flag = await searchHostByUrl(jsonFileUrl, searchUrl);
+    const host = await searchHostByUrl(jsonFileUrl, searchUrl);
 
-    //return true if userUrl exists in db
+    //check if host has any flags in preferences
+    let relevantHost = false;
+    chrome.storage.sync.get(['flagPreferences'], function(result) {
+        //check each flag against preferences until one is found
+        for (let i = 0; i < host.flags.length; i++){
+            if (host.flags[i]["flag-type-key"] in result.flagPreferences){
+                relevantHost = true;
+                break;
+            }
+        }
+    });
+    if (!relevantHost) return null;
+
+    //return true if userUrl exists in db and relevant to preferences
     return flag;
 }
 

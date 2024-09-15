@@ -40,10 +40,13 @@ function showNotification(hostObj) {
     const positivityScore = flags.length - negativityCount;
     if (negDiff <= 0){
         //set red icon
+        notifButtonMessage = "Find alternatives";
     } else if (negDiff >= flags.length){
         //set green icom
+        notifButtonMessage = "Find out more";
     } else {
         //set yellow icon
+        notifButtonMessage = "Find alternatives";
     }
 
     // Check if the notifications API is available
@@ -53,7 +56,10 @@ function showNotification(hostObj) {
             iconUrl: notifIconUrl,
             title: notifTitle,
             message: notifMessage,
-            priority: 2
+            priority: 2,
+            buttons: [
+                { title: notifButtonMessage }
+            ]
         });
     } else {
         console.error("Notifications API is unavailable.");
