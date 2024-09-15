@@ -1,5 +1,7 @@
-import checkForHost from "./scripts/findFlag";
-import showNotification from "./scripts/notify";
+import checkForHost from "./scripts/findFlag.js";
+import showNotification from './scripts/notify.js';
+
+console.log("Doing something");
 
 //get the hostname from a URL
 function getHostName(url) {
@@ -23,4 +25,3 @@ chrome.webNavigation.onCompleted.addListener(async function (details) {
     }
 
 }, { url: [{ urlMatches: 'https://*/*' }] });
-

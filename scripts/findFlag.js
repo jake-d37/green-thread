@@ -1,4 +1,4 @@
-const HOST_DATA_PATH = '../api/hosts.json';
+const HOST_DATA_PATH = chrome.runtime.getURL('api/hosts.json');
 
 //store what URLs have already been searched
 let alreadySearched = [];
@@ -21,8 +21,16 @@ async function searchHostByUrl(jsonFileUrl, searchUrl) {
     }
 }
 
+function getFlagPreferences() {
+    return new Promise((resolve) => {
+        chrome.storage.sync.get(['flagPreferences'], (result) => {
+            resolve(result.flagPreferences || {});
+        });
+    });
+}
+
 //check url for associated flag
-async function checkForHost(searchUrl) {
+export default async function checkForHost(searchUrl) {
     const jsonFileUrl = HOST_DATA_PATH;
 
     //ensure the url hasn't been checked already this session
@@ -38,21 +46,16 @@ async function checkForHost(searchUrl) {
 
     const host = await searchHostByUrl(jsonFileUrl, searchUrl);
 
-    //check if host has any flags in preferences
-    let relevantHost = false;
-    chrome.storage.sync.get(['flagPreferences'], function(result) {
-        //check each flag against preferences until one is found
-        for (let i = 0; i < host.flags.length; i++){
-            if (host.flags[i]["flag-type-key"] in result.flagPreferences){
-                relevantHost = true;
-                break;
-            }
-        }
-    });
-    if (!relevantHost) return null;
+    if (!host) {
+        return null; // Host not found in the JSON file
+    }
 
-    //return true if userUrl exists in db and relevant to preferences
-    return flag;
+    // Get flag preferences
+    const flagPreferences = await getFlagPreferences();
+
+    // Check if host has any relevant flags
+    const relevantHost = host.flags.some(flag => flag["flag-type-key"] in flagPreferences);
+
+    // Return true if userUrl exists in db and relevant to preferences
+    return relevantHost ? host : null;
 }
-
-export default checkForHost;

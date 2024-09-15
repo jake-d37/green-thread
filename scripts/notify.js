@@ -1,10 +1,20 @@
-const FLAG_TYPES_PATH = "../api/flag-types.json";
+const FLAG_TYPES_PATH = chrome.runtime.getURL('api/flag-types.json');
 
-//store the flag types
-let flagTypes = fetchFlagTypes();
+//store the flag types globally, but do not await it at the top level
+let flagTypes = null;
+
+//fetch the flag types during service worker initialization
+async function initializeFlagTypes() {
+    flagTypes = await fetchFlagTypes();
+}
+
+// Initialize flag types on startup (using `chrome.runtime.onInstalled`)
+chrome.runtime.onInstalled.addListener(() => {
+    initializeFlagTypes();
+});
 
 // show dynamic notification based on host data
-function showNotification(hostObj) {
+export default function showNotification(hostObj) {
     //initialize text content
     let notifTitle = "";
     let notifMessage = "";
@@ -106,5 +116,3 @@ async function fetchFlagTypes() {
         return null;
     }
 }
-
-export default showNotification;
