@@ -1,0 +1,55 @@
+{
+    "empty": {
+        "name": "",
+        "host-link": "",
+        "flags": [
+            {
+                "flag-type-key": "0",
+                "pos-neg": "pos",
+                "evidence": [
+                    {
+                        "evidence-link": "",
+                        "evidence-description" : ""
+                    },
+                    {
+                        "evidence-link": "",
+                        "evidence-description" : ""
+                    }
+                ]
+            },
+            {
+                "flag-type-key": "0",
+                "pos-neg": "neg",
+                "evidence": [
+                    {
+                        "evidence-link": "",
+                        "evidence-description" : ""
+                    },
+                    {
+                        "evidence-link": "",
+                        "evidence-description" : ""
+                    }
+                ]
+            }
+        ],
+        "submitterKey": ""
+    },
+
+    "0": {
+        "name": "",
+        "host-link": "",
+        "flags": [
+            {
+                "flag-type-key": "0",
+                "pos-neg": "pos",
+                "evidence": [
+                    {
+                        "evidence-link": "",
+                        "evidence-description" : ""
+                    }
+                ]
+            }
+        ],
+        "submitterKey": ""
+    }
+}

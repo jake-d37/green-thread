@@ -1,0 +1,10 @@
+{
+    "0": {
+        "negative-name": "Not vegan",
+        "positive-name": "Vegan"
+    },
+    "1": {
+        "negative-name": "Fast fashion",
+        "positive-name": "Not fast fashion"
+    }
+}
