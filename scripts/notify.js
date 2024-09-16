@@ -68,7 +68,7 @@ export default function showNotification(hostObj) {
 
     // Check if the notifications API is available
     if (chrome.notifications) {
-        chrome.notifications.create({
+        chrome.notifications.create('openInfo',{
             type: 'basic',
             iconUrl: notifIconUrl,
             title: notifTitle,
@@ -109,6 +109,31 @@ function formatFlagName(f){
 
     return formattedName;
 }
+
+// Handle the notification button click event
+chrome.notifications.onButtonClicked.addListener((notificationId) => {
+    console.log(`Notification button clicked: ${notificationId}`);
+    
+    if (notificationId === 'openInfo') {
+        console.log("Opening side panel from notification button");
+        
+        // Use setOptions to dynamically load a page into the side panel
+        chrome.tabs.create({ url: 'popup/info.html' });
+    }
+});
+
+//CANT GET THIS WORKING IDK WHAT TO DO
+async function openSidePanel() {
+    const tabId = getCurrentTab();
+    chrome.sidePanel.open({ tabId: tabId });
+}
+
+async function getCurrentTab() {
+    let queryOptions = { active: true, lastFocusedWindow: true };
+    // `tab` will either be a `tabs.Tab` instance or `undefined`.
+    let [tab] = await chrome.tabs.query(queryOptions);
+    return tab;
+  }
 
 //get the flag types from JSON
 async function fetchFlagTypes() {
