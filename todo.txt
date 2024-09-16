@@ -1,0 +1,4 @@
+- add functionality of preferences page to text notifications
+- test notification functionality
+- make pressing notification button open popup
+- add action of popup showing with test info page

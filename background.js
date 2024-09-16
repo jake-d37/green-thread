@@ -14,8 +14,7 @@ chrome.webNavigation.onCompleted.addListener(async function (details) {
     //ensure we don't get too specific of a url
     let hostName = getHostName(details.url);
 
-    console.log('New page loaded:', details.url);
-    console.log('Url base: ', hostName);
+    console.log('Host: ', hostName);
 
     //check for flagged host
     const hostObj = await checkForHost(hostName);

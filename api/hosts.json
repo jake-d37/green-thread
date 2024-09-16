@@ -36,8 +36,8 @@
     },
 
     "0": {
-        "name": "",
-        "host-link": "",
+        "name": "Test (Adidas)",
+        "host-link": "www.adidas.com.au",
         "flags": [
             {
                 "flag-type-key": "0",

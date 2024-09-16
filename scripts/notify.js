@@ -6,6 +6,7 @@ let flagTypes = null;
 //fetch the flag types during service worker initialization
 async function initializeFlagTypes() {
     flagTypes = await fetchFlagTypes();
+    console.log("Flag types: " + flagTypes);
 }
 
 // Initialize flag types on startup (using `chrome.runtime.onInstalled`)
@@ -29,15 +30,21 @@ export default function showNotification(hostObj) {
 
     //dynamically set notification message
     notifMessage = `${pageName} has been flagged as `;
-    for (let i = 0; i < flags.length - 1; i++) {
-        notifMessage += `${formatFlagName(flags[i])}, `;
 
-        //count how many negative flags there are
-        if (flags[i]["pos-neg"] === "neg"){
-            negativityCount++;
+    //differnet logic if there is only one flag
+    if (flags.length === 1){
+        notifMessage += `${formatFlagName(flags[0])}.`;
+    } else {
+        for (let i = 0; i < flags.length - 1; i++) {
+            notifMessage += `${formatFlagName(flags[i])}, `;
+
+            //count how many negative flags there are
+            if (flags[i]["pos-neg"] === "neg"){
+                negativityCount++;
+            }
         }
+        notifMessage += `and ${formatFlagName(flags[flags.length - 1])}.`;
     }
-    notifMessage += `and ${formatFlagName(flags[flags.length - 1])}`;
 
     //dynamically set title
     if (negativityCount >= 1){
@@ -48,10 +55,10 @@ export default function showNotification(hostObj) {
 
     //dynamically set icon based on proportion of negative flags
     const positivityScore = flags.length - negativityCount;
-    if (negDiff <= 0){
+    if (positivityScore <= 0){
         //set red icon
         notifButtonMessage = "Find alternatives";
-    } else if (negDiff >= flags.length){
+    } else if (positivityScore >= flags.length){
         //set green icom
         notifButtonMessage = "Find out more";
     } else {
